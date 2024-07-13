@@ -1,0 +1,44 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: MESSAGESERVICE
+    cloud:
+      function:
+        definition: email|sms
+      stream:
+        bindings:
+          emailsms-in-0:
+            destination: send-communication
+            group: ${spring.application.name}
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    connection-timeout: 10s
+  eureka:
+    instance:
+      prefer-ip-address: true
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/
+      register-with-eureka: true
+      fetch-registry: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/messageData?createTableIfNotExist=true
+    username: root
+    password: maninder123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+  web:
+    cors:
+      allow-credentials: true
+      allowed-origins: "http://localhost:3000"
+      allowed-methods: GET, POST, PUT, DELETE, OPTIONS
+      allowed-headers: "*"
